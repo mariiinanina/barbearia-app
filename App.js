@@ -1,20 +1,36 @@
+import { useState } from 'react';
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import ListaScreen from './src/ListaScreen';
+import FormScreen from './src/FormScreen';
 
 export default function App() {
+  // tela: 'lista' ou 'form'
+  const [tela, setTela] = useState('lista');
+  const [selecionado, setSelecionado] = useState(null);
+
+  function abrirNovo() {
+    setSelecionado(null);
+    setTela('form');
+  }
+
+  function abrirEdicao(item) {
+    setSelecionado(item);
+    setTela('form');
+  }
+
+  function voltar() {
+    setSelecionado(null);
+    setTela('lista');
+  }
+
   return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
+    <>
+      <StatusBar style="dark" />
+      {tela === 'lista' ? (
+        <ListaScreen onNovo={abrirNovo} onEditar={abrirEdicao} />
+      ) : (
+        <FormScreen agendamento={selecionado} onVoltar={voltar} />
+      )}
+    </>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
